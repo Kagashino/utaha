@@ -1,6 +1,35 @@
-# 打造自己的库
+# Utaha Utilities
 
-造轮子一直都是前端开发中绕不过去的槛，作为初学者倒是不用想太多，自己私底下一定要造，你造轮子写的每一行代码都会化成你的底蕴。
+commmon extendable util methods
+
+## Installation
+Script Tag Reference
+```
+  <script src="path/to/utaha.js""></script>
+```
+
+Using npm
+> npm i utaha  
+yarn add utaha
+## Usage
+declare all functions to global  
+```
+  utaha.declareAll();
+```
+noConflict option was set to true, it will not override name-conflict funtion. pass { noConflict:false } to override
+```
+  utaha.declareAll({
+    noConflict : false
+  })
+```
+we recommend you import as requirement in Browserify/webpack environment
+```
+  import { isUndef, isArray, isFunction } from utaha
+``` 
+## Notice
+- DOM hanlder functions will not be imported when using pure Node.js environment.
+
+<!-- 造轮子一直都是前端开发中绕不过去的槛，作为初学者倒是不用想太多，自己私底下一定要造，你造轮子写的每一行代码都会化成你的底蕴。
 
 值得模仿的库很多，经典的比如 jQuery、 Lodash ，大型一点比如 vuejs 、react ，我们可以在模仿这些库中学到很多代码技巧，但是更重要的是摸清这些库的设计思想。始终要提现自己的是，语言和代码只是工具，体系和思想才是灵魂，什么时候你使用语言就像拿起锤子钉钉子一样自然，什么时候你就能造出自己的摩天大厦。
 
@@ -28,4 +57,4 @@
 6. code coverage 不小于 95%
 7. 使用 git hook 来自动跑用例和代码覆盖率
    * [自定义 Git - Git 钩子](https://git-scm.com/book/zh/v2/%E8%87%AA%E5%AE%9A%E4%B9%89-Git-Git-%E9%92%A9%E5%AD%90)
-   * [husky](https://github.com/typicode/husky)
+   * [husky](https://github.com/typicode/husky) -->
