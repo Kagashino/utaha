@@ -10,7 +10,8 @@
 import {isArray, isObject} from "./util";
 
 export function getQueryValue (name, querystring) {
-  return new RegExp(name + '=(.+)&?$').exec(querystring)[1]
+  let result = new RegExp(name + '=(.+)&?$').exec(querystring) || []
+  return result[1];
 }
 
 /**
@@ -41,11 +42,4 @@ export function serializeStr (data) {
     return oqs;
   }
   return qs.substr(0,qs.length-1)
-}
-
-getQueryValue._canExtendTo = serializeStr._canExtendTo = String;
-
-export default {
-  getQueryValue,
-  serializeStr
 }

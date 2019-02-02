@@ -29,7 +29,7 @@ export function isDate(obj) {
 }
 
 export function isEmptyObject(obj) {
-  return isObject(obj) && !Object.keys(obj).length;
+  return isObject(obj) && !Object.keys(obj).length && Object.getPrototypeOf(obj) === Object.prototype;
 }
 
 /**
@@ -37,7 +37,7 @@ export function isEmptyObject(obj) {
  * @param obj
  * @returns {boolean}
  */
-function isCircular (obj) {
+export function isCircular (obj) {
   let seenObjects = [];
 
   function detect (obj) {
@@ -48,7 +48,6 @@ function isCircular (obj) {
       seenObjects.push(obj);
       for (let key of Object.keys(obj) ) {
         if ( detect(obj[key]) ) {
-          console.log(obj, 'cycle at ' + key);
           return true;
         }
       }
@@ -75,7 +74,7 @@ export function isPrimitive(val) {
  */
 export function deepCopy (obj, cache = []) {
   // just return if obj is immutable value
-  if ( !isObject(obj) && isArray(obj) ) {
+  if ( !isObject(obj) && !isArray(obj) ) {
     return obj
   }
 
@@ -105,24 +104,40 @@ export function randInt(count, startWith = 0 ) {
 }
 
 /**
- * 防抖函数，减少延迟时间
+ * 防抖函数
  * @param callback
  * @param time
  * @returns {Function}
  */
 export function createDebounce(callback, time = 300) {
   let timer
-  return function () {
+  return ()=> new Promise( (resolve,reject)=>{
     if (timer) {
       clearTimeout(timer)
+      reject()
+      return;
     }
 
     timer = setTimeout(() => {
-      callback()
+      resolve(callback());
     }, time)
-  }
+  })
 }
 
+/**
+ * 定时器函数Promise化
+ * @param executor
+ * @param delay
+ * @returns {Promise<any>}
+ */
+export function timeoutPromise (executor,delay = 100) {
+  if ( !isFunction(executor) ) {
+    throw new TypeError(`executor:${executor} is not a function`)
+  }
+  return new Promise((resolve, reject, context = null) => {
+    setTimeout(executor.bind(context,resolve,reject),delay)
+  })
+}
 
 export const log = console.log;
 export const dir = console.dir;

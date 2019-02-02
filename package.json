@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npx jest",
+    "test": "npx jest --coverage",
     "build": "webpack"
   },
   "repository": {
