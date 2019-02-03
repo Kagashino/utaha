@@ -62,3 +62,6 @@ typings/
 
 # lockfiles
 yarn.lock
+
+# dev record
+note.md

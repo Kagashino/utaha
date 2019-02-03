@@ -1,35 +1,35 @@
-const toString = Object.prototype.toString;
+const toString = Object.prototype.toString
 
-export function isBrowser() {
-  return typeof window === 'object';
+export function isBrowser () {
+  return typeof window === 'object'
 }
 
-export function isUndef(obj) {
+export function isUndef (obj) {
   return typeof obj === 'undefined'
 }
 
-export function isObject(obj) {
-  return toString.call(obj) ===  '[object Object]';
+export function isObject (obj) {
+  return toString.call(obj) === '[object Object]'
 }
 
-export function isNull(obj) {
+export function isNull (obj) {
   return toString.call(obj) === '[object Null]'
 }
 
-export function isArray(obj) {
+export function isArray (obj) {
   return toString.call(obj) === '[object Array]'
 }
 
-export function isFunction(obj) {
+export function isFunction (obj) {
   return toString.call(obj) === '[object Function]'
 }
 
-export function isDate(obj) {
+export function isDate (obj) {
   return toString.call(obj) === '[object Date]'
 }
 
-export function isEmptyObject(obj) {
-  return isObject(obj) && !Object.keys(obj).length && Object.getPrototypeOf(obj) === Object.prototype;
+export function isEmptyObject (obj) {
+  return isObject(obj) && !Object.keys(obj).length && Object.getPrototypeOf(obj) === Object.prototype
 }
 
 /**
@@ -38,90 +38,106 @@ export function isEmptyObject(obj) {
  * @returns {boolean}
  */
 export function isCircular (obj) {
-  let seenObjects = [];
+  let seenObjects = []
 
   function detect (obj) {
     if (obj && typeof obj === 'object') {
       if (seenObjects.indexOf(obj) !== -1) {
-        return true;
+        return true
       }
-      seenObjects.push(obj);
-      for (let key of Object.keys(obj) ) {
-        if ( detect(obj[key]) ) {
-          return true;
+      seenObjects.push(obj)
+      for (let key of Object.keys(obj)) {
+        if (detect(obj[key])) {
+          return true
         }
       }
     }
-    return false;
+    return false
   }
 
-  return detect(obj);
+  return detect(obj)
 }
 
-export function isPrimitive(val) {
+/**
+ * 是否为原始类型
+ * @param val
+ * @returns {boolean}
+ */
+export function isPrimitive (val) {
   return typeof val === 'number' ||
          typeof val === 'string' ||
-         typeof val === 'boolean'||
+         typeof val === 'boolean' ||
          typeof val === 'symbol' ||
          isUndef(val) || isNull(val)
 }
 
 /**
- * 对象深拷贝，支持闭环对象
+ * 对象拷贝，支持闭环对象/数组
  * @param obj
  * @param cache
  * @returns {*}
  */
 export function deepCopy (obj, cache = []) {
-  // just return if obj is immutable value
-  if ( !isObject(obj) && !isArray(obj) ) {
+
+  if (!isObject(obj) && !isArray(obj)) {
     return obj
   }
-
-  // if obj is hit, it is in circular structure
-  const hit = cache.filter(c => c.original === obj)[0]
-  if (hit) {
-    return hit.copy
+  // 返回闭环对象
+  for ( let i of cache ) {
+    if ( i.original === obj ) {
+      return i.copy
+    }
   }
 
   const copy = isArray(obj) ? [] : {}
-  // put the copy into cache at first
-  // because we want to refer it in recursive deepCopy
+
   cache.push({
     original: obj,
     copy
   })
 
-  Object.keys(obj).forEach(key => {
+  for (let key of Object.keys(obj) ) {
     copy[key] = deepCopy(obj[key], cache)
-  })
+  }
 
   return copy
 }
 
-export function randInt(count, startWith = 0 ) {
-  return Math.floor(Math.random()*count) + startWith
+export function randInt (count, startWith = 0) {
+  return Math.floor(Math.random() * count) + startWith
 }
 
 /**
- * 防抖函数
- * @param callback
- * @param time
+ * 防抖函数，多个函数调用间隔小于延迟时间，仅执行最后一次调用
+ * @param callback 回调函数，支持自定参数
+ * @param delay 延迟间隔/最后一次调用的延迟时间
  * @returns {Function}
  */
-export function createDebounce(callback, time = 300) {
+export function createDebounce (callback, delay = 300) {
   let timer
-  return ()=> new Promise( (resolve,reject)=>{
+  return (...args) => {
     if (timer) {
       clearTimeout(timer)
-      reject()
-      return;
     }
+    timer = setTimeout(callback, delay, ...args)
+  }
+}
 
-    timer = setTimeout(() => {
-      resolve(callback());
-    }, time)
-  })
+/**
+ * 节流函数
+ * @param callback 回调函数，支持自定参数
+ * @param delay 设定多少间隔后调用，默认300
+ * @returns {Function}
+ */
+export function createThrottle (callback, delay = 300) {
+  let start = Date.now()
+  return (...arg) => {
+    let diff = Date.now() - start
+    if (!diff || diff >= delay) {
+      start = Date.now()
+      callback(...arg)
+    }
+  }
 }
 
 /**
@@ -130,14 +146,14 @@ export function createDebounce(callback, time = 300) {
  * @param delay
  * @returns {Promise<any>}
  */
-export function timeoutPromise (executor,delay = 100) {
-  if ( !isFunction(executor) ) {
+export function timeoutPromise (executor, delay = 100) {
+  if (!isFunction(executor)) {
     throw new TypeError(`executor:${executor} is not a function`)
   }
   return new Promise((resolve, reject, context = null) => {
-    setTimeout(executor.bind(context,resolve,reject),delay)
+    setTimeout(executor.bind(context, resolve, reject), delay)
   })
 }
 
-export const log = console.log;
-export const dir = console.dir;
+export const log = console.log
+export const dir = console.dir
