@@ -3,13 +3,6 @@
 Some common util methods. (e.g Array/String/Date handler, Type Judgement and Debounce/Throttle)
 
 ## Installation
-Script Tag Reference
-```
-  <script src="path/to/utaha.js""></script>
-```
-```
-  utaha.isBrowser() // true
-```
 
 Using npm
 > npm i utaha  

@@ -4,15 +4,13 @@ import * as array from './array'
 import * as string from './string'
 import * as date from './date'
 
-export const utaha = Object.assign({
+
+const utaha = Object.assign({
   ...array,
   ...string,
   ...util,
-  ...date
-}, util.isBrowser() ? dom : {})
+  ...date,
+  ...dom
+})
 
-if (util.isBrowser()) {
-  global.utaha = utaha
-}
-
-export default utaha
+export default utaha;

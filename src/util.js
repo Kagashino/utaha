@@ -1,9 +1,5 @@
 const toString = Object.prototype.toString
 
-export function isBrowser () {
-  return typeof window === 'object'
-}
-
 export function isUndef (obj) {
   return typeof obj === 'undefined'
 }
