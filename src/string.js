@@ -43,3 +43,19 @@ export function serializeStr (data) {
   }
   return qs.substr(0, qs.length - 1)
 }
+
+/**
+ * html转义
+ * @param htmlText
+ * @returns {string}
+ */
+export function htmlEscape (htmlText) {
+  return htmlText.replace(/[<>"&]/g,(match)=>{
+    switch (match) {
+      case '<': return '&lt;'
+      case '>': return '&gt;'
+      case '\"': return '&quot;'
+      case '&': return '&amp;'
+    }
+  })
+}

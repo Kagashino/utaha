@@ -1,6 +1,7 @@
 import {
   getQueryValue,
-  serializeStr
+  serializeStr,
+  htmlEscape
 } from '../src/string'
 
 /**
@@ -30,5 +31,12 @@ describe('[string]: test string methods:', () => {
   test('test getQueryValue', () => {
     expect(getQueryValue('goodbye', '?hello=js&goodbye=php')).toBe('php')
     expect(getQueryValue('seeu', '?hello=js&goodbye=php')).toBeUndefined()
+  })
+
+  test('test htmlEscape', ()=>{
+    let origin = '<h3>hello world & "goodbye" !</h3>'
+
+    expect(htmlEscape('normal text')).toBe('normal text')
+    expect(htmlEscape(origin)).toBe('&lt;h3&gt;hello world &amp; &quot;goodbye&quot; !&lt;/h3&gt;')
   })
 })

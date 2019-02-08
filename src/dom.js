@@ -98,9 +98,7 @@ export function getCookie (cname) {
   const cookie = decodeURIComponent(document.cookie)
   const ca = cookie.split('; ')
   for (let c of ca) {
-    while (c.charAt(0) === ' ') {
-      c = c.substring(1)
-    }
+    c = c.replace(/^ +/,'')
     if (c.indexOf(name) === 0) {
       return c.substring(name.length, c.length)
     }
