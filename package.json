@@ -1,6 +1,6 @@
 {
   "name": "utaha",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Some common util methods. (e.g Array/String/Date handler, Type Judgement and Debounce/Throttle)",
   "main": "dist/main.js",
   "directories": {
