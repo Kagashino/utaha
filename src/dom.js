@@ -93,9 +93,9 @@ export function setCookie (name, val, option) {
  * @param cname
  * @returns {string}
  */
-export function getCookie (cname) {
+export function getCookie (cname, cookieStr) {
   const name = cname + '='
-  const cookie = decodeURIComponent(document.cookie)
+  const cookie = cookieStr ? decodeURIComponent(cookieStr) : decodeURIComponent(document.cookie)
   const ca = cookie.split('; ')
   for (let c of ca) {
     c = c.replace(/^ +/,'')

@@ -104,6 +104,12 @@ describe('[dom]: test cookie handlers:', () => {
     expect(getCookie('name')).toBe('megumi')
   })
 
+  test('test custom cookie getter', () => {
+    setCookie('name', 'eriri')
+    const cookieStr = document.cookie;
+    expect(getCookie('name',cookieStr)).toBe('eriri')
+  })
+
   test('test cookie removing', () => {
     setCookie('name', 'utaha')
     setCookie('age', '16')

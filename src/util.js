@@ -138,18 +138,25 @@ export function createThrottle (callback, delay = 300) {
 
 /**
  * 定时器函数Promise化
- * @param executor
+ * @param fn
  * @param delay
  * @returns {Promise<any>}
  */
-export function timeoutPromise (executor, delay = 100) {
-  if (!isFunction(executor)) {
-    throw new TypeError(`executor:${executor} is not a function`)
+export function timeoutPromise (fn, delay = 100) {
+  if (!isFunction(fn)) {
+    throw new TypeError(`argument[0]: ${fn} is not a function`)
   }
   return new Promise((resolve, reject, context = null) => {
-    setTimeout(executor.bind(context, resolve, reject), delay)
+    setTimeout(fn.bind(context, resolve, reject), delay)
   })
 }
 
+
+export function promisfy (fn) {
+  if (!isFunction(fn)) {
+    throw new TypeError(`argument[0]: ${fn} is not a function`)
+  }
+  return new Promise(fn)
+}
 export const log = console.log
 export const dir = console.dir
